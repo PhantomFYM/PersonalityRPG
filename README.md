@@ -1,4 +1,4 @@
-PersonalityRPG (working title) is going to be a fun way to learn your JLPT personality through a simple text-based RPG game.
+PersonalityRPG (working title) is going to be a fun way to learn your INFJ personality through a simple text-based RPG game.
 
 Current functionality is limited. Current version on GitHub has combat set up, but not effectively as of yet. 
 
