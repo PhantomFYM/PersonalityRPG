@@ -50,7 +50,123 @@ def town(currTown):
         for person, message in towns[currTown].items():
             print(f"[{person}] {message}")
         break
-            
+        
+#Personality Function
+if(e1Result == 0):
+   if(e2Result == 1):
+    if(e3Result == 2):
+        if(e4Result == 3): 
+            if(e5Result == 4):
+                print("Your personality is INTJ, imaginative and stragetic thinkers with a plan for everything.")
+
+if(e1Result == 0): 
+    if(e2Result == 1): 
+        if(e3Result == 2): 
+            if(e4Result == 3): 
+                if(e5Result == 4): 
+                    print("Your personality is INTP, innovative investors with a lot of knowledge.")
+
+if(e1Result == 0):
+   if(e2Result == 1):
+    if(e3Result == 2):
+        if(e4Result == 3): 
+            if(e5Result == 4):
+                print("Your personality is ENTJ, bold, imaginative and strong-willed leaders, always finding a way- or making one.") 
+
+if(e1Result == 0):
+   if(e2Result == 1):
+    if(e3Result == 2):
+        if(e4Result == 3): 
+            if(e5Result == 4):
+                print("Your personality is ENTP, smart and curious thinkers who ca not resist an intellectual challenge.")
+
+if(e1Result == 0):
+   if(e2Result == 1):
+    if(e3Result == 2):
+        if(e4Result == 3): 
+            if(e5Result == 4):
+                print("Your personality is INFJ, quiet and mystical, yet very inpiring and tireless idealist".) 
+
+if(e1Result == 0):
+   if(e2Result == 1):
+    if(e3Result == 2):
+        if(e4Result == 3): 
+            if(e5Result == 4): 
+                print("Your personality is INFP, poetic, kind and altruistic people, always eager to help a good cause.") 
+
+if(e1Result == 0):
+   if(e2Result == 1):
+    if(e3Result == 2):
+        if(e4Result == 3): 
+            if(e5Result == 4):
+                print("Your personality is ENFJ, charamasitc and inspiring leaders able to mesmerize their listeners.") 
+
+if(e1Result == 0):
+   if(e2Result == 1):
+    if(e3Result == 2):
+        if(e4Result == 3): 
+            if(e5Result == 4):
+                print("Your personality is ENFP, euthusiastic, creative and socialable free spirits, who can always find a reason to smile.")
+
+if(e1Result == 0):
+   if(e2Result == 1):
+    if(e3Result == 2):
+        if(e4Result == 3): 
+            if(e5Result == 4):
+                print("Your personality is ISTJ, practical and fact-minded individuals, whose reliability can not be doubled.") 
+
+if(e1Result == 0):
+   if(e2Result == 1):
+    if(e3Result == 2):
+        if(e4Result == 3): 
+            if(e5Result == 4):
+                print("Your personality is ISFJ, very dedicated and warm protectors, always ready to defend their loved ones.") 
+
+if(e1Result == 0):
+   if(e2Result == 1):
+    if(e3Result == 2):
+        if(e4Result == 3): 
+            if(e5Result == 4):
+                print("Your personality is ESTJ, excellent administrators, unsurpassed at managing things or people.")  
+
+if(e1Result == 0):
+   if(e2Result == 1):
+    if(e3Result == 2):
+        if(e4Result == 3): 
+            if(e5Result == 4):
+                print("Your personality is ESFJ, caring, social, and popular people, always eager to help.") 
+
+if(e1Result == 0):
+   if(e2Result == 1):
+    if(e3Result == 2):
+        if(e4Result == 3): 
+            if(e5Result == 4):
+                print("Your personality is ISTP, bold and practical experimenters") 
+
+if(e1Result == 0):
+   if(e2Result == 1):
+    if(e3Result == 2):
+        if(e4Result == 3): 
+            if(e5Result == 4):
+                print("Your personality is ISFP, flexible and charming artists always ready to explore and experience something new.")
+                
+if(e1Result == 0):
+   if(e2Result == 1):
+    if(e3Result == 2):
+        if(e4Result == 3): 
+            if(e5Result == 4):
+                print("Your personality is ESTP, smart, energentic and very  perceptive people.") 
+
+if(e1Result == 0):
+   if(e2Result == 1):
+    if(e3Result == 2):
+        if(e4Result == 3): 
+            if(e5Result == 4):
+                print("Your perosnality is ESFP, spontaneous, energetic and enthusiastic people.") 
+
+
+
+
 #Attack Functions
 def Attack():
     print("\nYou lunge at the monster.")
