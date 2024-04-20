@@ -54,24 +54,99 @@ towns = {
 "Sarah": "What's up."
 },
 2: {
-"Test1": "Test words 1",
-"Test2": "Test words 2",
-"Test3": "Test words 3"
+"john": "Good job you made it to the next town",
+"percy": "wow thats impressive",
+"jewel": "intresting"
 },
 3: {
-"Test1": "Test words 1",
-"Test2": "Test words 2",
-"Test3": "Test words 3"
+"mark": "oh you think you accomplished something",
+"cleo": "how strange",
+"sam": "you have a long way to go"
 },
 4: {
-"Test1": "Test words 1",
-"Test2": "Test words 2",
-"Test3": "Test words 3"
+"dean": "wow",
+"emily": "if you want to know more keep going",
+"susan": "so how was the monsters"
 },
 5: {
-"Test1": "Test words 1",
-"Test2": "Test words 2",
-"Test3": "Test words 3"
+"lily": "well well",
+"joseph": "Test words 2",
+"steve": "Test words 3"
+},
+6: {
+"jessie": "Test words 1",
+"rick": "Test words 2",
+"daryl": "Test words 3"
+},
+7:{
+"steveee": "Test words 1",
+"test2": "Test words 2",
+"sophia": "Test words 3"
+},
+8:{
+"amy": "Test words 1",
+"holt": "Test words 2",
+"charles": "Test words 3"
+},
+9:{
+"michonne": "Test words 1",
+"carl": "Test words 2",
+"negan": "Test words 3"
+},
+10:{
+"sony": "Test words 1",
+"apple": "Test words 2",
+"pear": "Test words 3"
+},
+11:{
+"ceaser": "Test words 1",
+"salad": "Test words 2",
+"ranch": "Test words 3"
+},
+12:{
+"pizza": "Test words 1",
+"cheese": "Test words 2",
+"milk": "Test words 3"
+},
+13:{
+"m": "Test words 1",
+"s": "Test words 2",
+"t": "Test words 3"
+},
+14:{
+"hi": "Test words 1",
+"hello": "Test words 2",
+"eee": "Test words 3"
+},
+15:{
+"test": "Test words 1",
+"test": "Test words 2",
+"test": "Test words 3"
+},
+16:{
+"test": "Test words 1",
+"test": "Test words 2",
+"test": "Test words 3"
+},
+17:{
+"test": "Test words 1",
+"test": "Test words 2",
+"test": "Test words 3"
+},
+18:{
+"test": "Test words 1",
+"test": "Test words 2",
+"test": "Test words 3"
+},
+19:{
+"test": "Test words 1",
+"test": "Test words 2",
+"test": "Test words 3"
+},
+20:{
+"test": "Test words 1",
+"test": "Test words 2",
+"test": "Test words 3"
 },
 }
     
@@ -82,6 +157,10 @@ def town(currTown):
         for person, message in towns[currTown].items():
             print(f"[{person}] {message}")
         break
+    if (3<=0):
+        print(f"\nWelcome to Town {currTown}\n")
+    else:
+        print("\nTo get to next town you gave to beat the next boss")
         
 
 
@@ -343,5 +422,5 @@ if(e1Result == 0 and e2Result == 1 and e3Result == 2 and e4Result == 3 and e5Res
 if(e1Result == 0 and e2Result == 1 and e3Result == 2 and e4Result == 3 and e5Result == 4):
                 print("Your perosnality is ESFP, spontaneous, energetic and enthusiastic people.")
         
-    else:
+else:
         print("\nInvalid Input, try again.")
