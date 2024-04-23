@@ -1,5 +1,7 @@
 #Default Stats
 stats = {
+"Gold": 0,
+"Potion": 0,
 "EXP": 0,
 "LVL": 1,
 "HP": 10,
@@ -14,21 +16,30 @@ monStats = {
 "ATK": 0,
 }
 
+#Store Stats
+storeStats = {
+"currArmor": 1,
+"currSword": 1,
+}
+
+currArmorCost = storeStats["currArmor"] * 10
+currSwordCost = storeStats["currSword"] * 10
+
 #Boss monster stats
 monStatMap = {
-1: (45, 0, 0), #Enemy1
-2: (45, 0, 0), #Enemy2
-3: (45, 0, 0), #Enemy3
-4: (45, 0, 0), #Enemy4
-5: (45, 0, 0), #Enemy5
+1: (45, 10, 2), #Enemy1
+2: (90, 40, 10), #Enemy2
+3: (150, 100, 30), #Enemy3
+4: (200, 400, 50), #Enemy4
+5: (300, 1000, 100), #Enemy5
 }
 
 miniMonStatMap = {
-1: (10, 0, 0),
-2: (10, 0, 0),
-3: (10, 0, 0),
-4: (10, 0, 0),
-5: (10, 0, 0),
+1: (10, 2, 0),
+2: (30, 25, 2),
+3: (60, 40, 5),
+4: (130, 100, 10),
+5: (160, 250, 30),
 }
 
 #Agreement Meters
@@ -54,99 +65,24 @@ towns = {
 "Sarah": "What's up."
 },
 2: {
-"john": "Good job you made it to the next town",
-"percy": "wow thats impressive",
-"jewel": "intresting"
+"John": "Good job! You made it to the next town.",
+"Percy": "Wow, that's impressive.",
+"Jewel": "Interesting..."
 },
 3: {
-"mark": "oh you think you accomplished something",
-"cleo": "how strange",
-"sam": "you have a long way to go"
+"Mark": "Oh, you think you accomplished something?",
+"Cleo": "How strange",
+"Sam": "You have a long way to go."
 },
 4: {
-"dean": "wow",
-"emily": "if you want to know more keep going",
-"susan": "so how was the monsters"
+"Dean": "Wow..!",
+"Emily": "If you want to know more keep going.",
+"Susan": "So how where the monsters?"
 },
 5: {
-"lily": "well well",
-"joseph": "Test words 2",
-"steve": "Test words 3"
-},
-6: {
-"jessie": "Test words 1",
-"rick": "Test words 2",
-"daryl": "Test words 3"
-},
-7:{
-"steveee": "Test words 1",
-"test2": "Test words 2",
-"sophia": "Test words 3"
-},
-8:{
-"amy": "Test words 1",
-"holt": "Test words 2",
-"charles": "Test words 3"
-},
-9:{
-"michonne": "Test words 1",
-"carl": "Test words 2",
-"negan": "Test words 3"
-},
-10:{
-"sony": "Test words 1",
-"apple": "Test words 2",
-"pear": "Test words 3"
-},
-11:{
-"ceaser": "Test words 1",
-"salad": "Test words 2",
-"ranch": "Test words 3"
-},
-12:{
-"pizza": "Test words 1",
-"cheese": "Test words 2",
-"milk": "Test words 3"
-},
-13:{
-"m": "Test words 1",
-"s": "Test words 2",
-"t": "Test words 3"
-},
-14:{
-"hi": "Test words 1",
-"hello": "Test words 2",
-"eee": "Test words 3"
-},
-15:{
-"test": "Test words 1",
-"test": "Test words 2",
-"test": "Test words 3"
-},
-16:{
-"test": "Test words 1",
-"test": "Test words 2",
-"test": "Test words 3"
-},
-17:{
-"test": "Test words 1",
-"test": "Test words 2",
-"test": "Test words 3"
-},
-18:{
-"test": "Test words 1",
-"test": "Test words 2",
-"test": "Test words 3"
-},
-19:{
-"test": "Test words 1",
-"test": "Test words 2",
-"test": "Test words 3"
-},
-20:{
-"test": "Test words 1",
-"test": "Test words 2",
-"test": "Test words 3"
+"Lily": "well well...",
+"Joseph": "Test words 2",
+"Steve": "Test words 3"
 },
 }
     
@@ -156,19 +92,66 @@ def town(currTown):
         print(f"\nWelcome to Town {currTown}\n")
         for person, message in towns[currTown].items():
             print(f"[{person}] {message}")
+            
+        print("\nTo get to the next town you have to beat the next boss\n")
         break
-    if (3<=0):
-        print(f"\nWelcome to Town {currTown}\n")
-    else:
-        print("\nTo get to next town you gave to beat the next boss")
-        
 
-
-
+#Store Functions
+def store():
+    while True:
+            storeSelect = input(f"What would you like to purchase?\n\n[0] Potion - 5G\n[1] Temper Armor - {currArmorCost}G\n[2] Temper Sword - {currSwordCost}G\n[3] Leave\n")
+            if(storeSelect.isdigit()):
+                storeSelect = int(storeSelect)
+                if(storeSelect == 0):
+                    if(stats["Gold"] >= 5):
+                        stats["Gold"] -= 5
+                        stats["Potion"] += 1
+                        print("\nYou bought one potion.\n")
+                    else:
+                        print("\nYou do not have enough gold.\n")
+                        continue
+                    
+                if(storeSelect == 1):
+                    if(storeStats["currArmor"] <= currMonster):
+                        if(stats["Gold"] >= currArmorCost):
+                            stats["Gold"] -= currArmorCost
+                            stats["Def"] += 10
+                        else:
+                            print("\nYou do not have enough gold.\n")
+                            continue
+                        
+                    else:
+                        print("The armor has been tempered as much as it can at this town.\nTry the next town.")
+                        continue
+                    
+                if(storeSelect == 2):
+                    if(storeStats["currSword"] <= currMonster):
+                        if(stats["Gold"] >= currSwordCost):
+                            stats["Gold"] -= currSwordCost
+                            stats["ATK"] += 10
+                        else:
+                            print("\nYou do not have enough gold.\n")
+                            continue
+                    else:
+                        print("The sword has been temepered as much as it can at this town.\nTry the next town.")
+                        continue
+                    
+                if(storeSelect == 3):
+                    break
+                else:
+                    print("\nYour input was invalid.\n")
+            else:
+                print("\nYour input was invalid.\n")
 
 
 #Attack Functions
-
+def usePotion():
+    if (stats["Potion"] >= 1):
+        print("You revitalize yourself with a potion.")
+        stats["Potion"] -= 1
+        stats["HP"] += 10 * currMonster
+    else:
+        print("You do not have any potions.")
 
 def miniAttack():
     print("\nYou lunge at the small monster.")
@@ -246,7 +229,7 @@ def BattleScreen():
     global currMonster
     while True:
         
-        select = input("\n[0] Attack\n[1] Tell Off\n[2] Discuss\n[3] Play\n[4] Befriend\n")
+        select = input("\n[0] Attack\n[1] Tell Off\n[2] Discuss\n[3] Play\n[4] Befriend\n[5] Potion\n")
         if (select.isdigit()): #Tests if select is a digit input before confirming
             select = int(select)
             if(select == 0):
@@ -259,6 +242,8 @@ def BattleScreen():
                 Play()
             elif(select == 4):
                 Befriend()
+            elif(select == 5):
+                usePotion()
             else:
                 print("\nInvalid Input, try again.")
             
@@ -275,8 +260,11 @@ def BattleScreen():
                 #if-statements.
                 
             xpGain = (currMonster * 10) ^ 2
+            goldGain = currMonster * 100
             print("You gained",xpGain,"EXP points!\n")
+            print("You gained",goldGain,"G!\n")
             stats["EXP"] += xpGain
+            stats["Gold"] += goldGain
             lvlCheck()
             meterReset()
             currMonster += 1
@@ -292,15 +280,18 @@ def BattleScreen():
 def miniBattleScreen():
     while True:
         
-        select = input("\n[0] Attack\n[1] Run\n\n")
+        select = input("\n[0] Attack\n[1] Potion\n[2] Run\n\n")
         if (select.isdigit()): #Tests if select is a digit input before confirming
             select = int(select)
             if(select == 0):
                 miniAttack()
                 
-            elif(select == 1):
+            elif(select == 2):
                 print("\nYou ran away.\n")
                 break
+
+            elif(select == 1):
+                usePotion()
             
             else:
                 print("\nInvalid Input, try again.")
@@ -313,6 +304,8 @@ def miniBattleScreen():
             xpGain = (currMonster * 2)
             print("You gained",xpGain,"EXP points!")
             stats["EXP"] += xpGain
+            stats["Gold"] += currMonster
+            print("You gained",currMonster,"G!")
             lvlCheck()
             miniSelect = input("Continue in field? \n[0] Yes\n[1] No\n")
             if(miniSelect.isdigit()):
@@ -344,7 +337,7 @@ def setMonStats(HP, ATK, Def):
 
 #Area Menu
 while True:
-    print("\n[0] Town\n[1] Area\n[2] Item\n[3] Advance\n[4] Stats\n")
+    print("\n[0] Town\n[1] Area\n[2] Shop\n[3] Advance\n[4] Stats\n")
     townSelect =(input())
     if(townSelect.isdigit()):
         townSelect = int(townSelect)
@@ -356,6 +349,10 @@ while True:
         if(townSelect == 1):
             setMonStats(*miniMonStatMap.get(currMonster, (0, 0, 0)))
             miniBattleScreen()
+            continue
+
+        if(townSelect == 2):
+            store()
             continue
             
         if(townSelect == 3):
