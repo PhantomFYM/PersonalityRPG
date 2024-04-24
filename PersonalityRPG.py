@@ -1,20 +1,27 @@
-#Default Stats
+#Player Stats
 stats = {
 "Gold": 0,
 "Potion": 0,
 "EXP": 0,
 "LVL": 1,
 "HP": 10,
+"currHP": 10,
 "Def": 0,
 "ATK": 5,
 }
 
-#Default Enemy Stats
+#Enemy Stats
 monStats = {
 "HP": 0,
 "Def": 0,
 "ATK": 0,
 }
+
+#Enemy Check
+currMonster = 1
+
+#BattleResults
+eResults = {}
 
 #Store Stats
 storeStats = {
@@ -24,10 +31,14 @@ storeStats = {
 
 currArmorCost = storeStats["currArmor"] * 10
 currSwordCost = storeStats["currSword"] * 10
+currPotCost = currMonster * 25
+
+#Rest Stats
+currRestCost = currMonster * 5
 
 #Boss monster stats
 monStatMap = {
-1: (45, 10, 2), #Enemy1
+1: (45, 50, 2), #Enemy1
 2: (90, 40, 10), #Enemy2
 3: (150, 100, 30), #Enemy3
 4: (200, 400, 50), #Enemy4
@@ -51,11 +62,7 @@ meters = {
 "sAgree": 0,
 }
 
-#Enemy Check
-currMonster = 1
 
-#BattleResults
-eResults = {}
 
 #Town texts
 towns = {
@@ -85,11 +92,43 @@ towns = {
 "Steve": "Test words 3"
 },
 }
-    
+
+#Story Calls
+def intro():
+    print("\n\n--------Coma--------")
+    print("In the eerie depths of the coma, they found themselves ensnared within the tangled maze of their")
+    print("own mind, where memories morphed into grotesque shapes and nightmares loomed in every")
+    print("shadow. Each night, as consciousness slipped deeper into oblivion, they were ensnared by visions")
+    print("of their past, twisted and distorted by the darkness that lurked within.\n")
+
+    print("In their dreams, they wandered through a desolate wasteland, where the once verdant meadows of")
+    print("childhood lay barren and lifeless. The wildflowers had withered into twisted thorns that tore at their")
+    print("flesh, drawing blood with every step. The warmth of a mother's embrace had turned into a")
+    print("suffocating grip, drowning them in a sea of guilt and regret.\n")
+
+    print("Amidst the chaos, there were echoes of laughter—a cruel mockery of the joy they once knew. These")
+    print("echoes taunted them, reminding them of the happiness they could never reclaim, the moments")
+    print("lost to the void of the coma.\n")
+
+    print("But amidst the despair, there was a glimmer of hope—a memory buried beneath the layers of pain")
+    print("and darkness. It was a dull memory of love, tainted by betrayal and heartache, yet still burning with")
+    print("a flicker of warmth. This ambiguous love became their lifeline, guiding them through the labyrinth of")
+    print("nightmares, a beacon of light in the suffocating darkness.\n")
+
+    print("As the days blurred into weeks and the weeks into months, they teetered on the brink of madness,")
+    print("grappling with the demons that lurked within their own mind. Yet even in the darkest depths of the")
+    print("coma, there remained a sliver of humanity—a spark of resilience that refused to be extinguished.\n")
+
+    print("And so, they clung to that spark with every ounce of strength they possessed, knowing that within")
+    print("the twisted labyrinth of their mind, there was still a chance for redemption—a chance to emerge")
+    print("from the shadows and reclaim their place in the light.\n\n")
+
+    print("After multiple months of aimless travel, a small town peers into sight...\n")
+
 #Town Functions
 def town(currTown):
     while True:
-        print(f"\nWelcome to Town {currTown}\n")
+        print(f"\n--------Town {currTown}--------\n")
         for person, message in towns[currTown].items():
             print(f"[{person}] {message}")
             
@@ -99,12 +138,12 @@ def town(currTown):
 #Store Functions
 def store():
     while True:
-            storeSelect = input(f"What would you like to purchase?\n\n[0] Potion - 5G\n[1] Temper Armor - {currArmorCost}G\n[2] Temper Sword - {currSwordCost}G\n[3] Leave\n")
+            storeSelect = input(f"What would you like to purchase?\n\n[0] Potion - {currPotCost}G\n[1] Temper Armor - {currArmorCost}G\n[2] Temper Sword - {currSwordCost}G\n[3] Leave\n")
             if(storeSelect.isdigit()):
                 storeSelect = int(storeSelect)
                 if(storeSelect == 0):
-                    if(stats["Gold"] >= 5):
-                        stats["Gold"] -= 5
+                    if(stats["Gold"] >= currPotCost):
+                        stats["Gold"] -= currPotCost
                         stats["Potion"] += 1
                         print("\nYou bought one potion.\n")
                     else:
@@ -146,60 +185,86 @@ def store():
 
 #Attack Functions
 def usePotion():
-    if (stats["Potion"] >= 1):
-        print("You revitalize yourself with a potion.")
-        stats["Potion"] -= 1
-        stats["HP"] += 10 * currMonster
+    if (stats["currHP"] < stats["HP"]):
+        if (stats["Potion"] >= 1):
+            print("You revitalize yourself with a potion.")
+            stats["Potion"] -= 1
+            stats["currHP"] = stats["HP"]
+            if(stats["currHP"] > stats["HP"]):
+                stats["currHP"] = stats["HP"]
+        else:
+            print("You do not have any potions.")
     else:
-        print("You do not have any potions.")
+        print("You are already max HP")
 
 def miniAttack():
     print("\nYou lunge at the small monster.")
-    print("The monster takes", stats["ATK"] - monStats["Def"],"points of damage.")
-    monStats["HP"] -= (stats["ATK"] - monStats["Def"])
-    print("The monster has", monStats["HP"],"Health remaining.\n")
+    if(monStats["Def"] < stats["ATK"]):
+        print("The small monster takes", stats["ATK"] - monStats["Def"],"points of damage.")
+        monStats["HP"] -= (stats["ATK"] - monStats["Def"])
+        print("The small monster has", monStats["HP"],"Health remaining.\n")
+    else:
+        print("The small monster was too strong, and took no damage!")
     
 def Attack():
     print("\nYou lunge at the monster.")
-    print("The monster takes", stats["ATK"] - monStats["Def"],"points of damage.")
-    monStats["HP"] -= (stats["ATK"] - monStats["Def"])
-    print("The monster has", monStats["HP"],"Health remaining.\n")
+    if(monStats["Def"] < stats["ATK"]):
+        print("The monster takes", stats["ATK"] - monStats["Def"],"points of damage.")
+        monStats["HP"] -= (stats["ATK"] - monStats["Def"])
+        print("The monster has", monStats["HP"],"Health remaining.\n")
+    else:
+        print("The monster was too strong, and took no damage!")
     meters["sDisagree"] += 1
 
 def TellOff():
     print("\nYou said some mean things to the monster.")
-    print("The monster takes", stats["ATK"] - monStats["Def"],"points of emotional damage.")
-    monStats["HP"] -= (stats["ATK"] - monStats["Def"])
-    print("The monster has", monStats["HP"],"Health remaining.\n")
+    if(monStats["Def"] < stats["ATK"]):
+        print("The monster takes", stats["ATK"] - monStats["Def"],"points of emotional damage.")
+        monStats["HP"] -= (stats["ATK"] - monStats["Def"])
+        print("The monster has", monStats["HP"],"Health remaining.\n")
+    else:
+        print("The monster was too strong, and took no damage!")
     meters["disagree"] += 1
 
 def Discuss():
     print("\nYou and the monster made small talk.")
-    print("The monster takes", stats["ATK"] - monStats["Def"],"points of boredom damage.")
-    monStats["HP"] -= (stats["ATK"] - monStats["Def"])
-    print("The monster has", monStats["HP"],"Health remaining\n")
+    if(monStats["Def"] < stats["ATK"]):
+        print("The monster takes", stats["ATK"] - monStats["Def"],"points of boredom damage.")
+        monStats["HP"] -= (stats["ATK"] - monStats["Def"])
+        print("The monster has", monStats["HP"],"Health remaining.\n")
+    else:
+        print("The monster was too strong, and took no damage!")
     meters["neutral"] += 1
 
 def Play():
     print("\nYou decided to have fun with the monster.")
-    print("The monster tires itself out, and takes", stats["ATK"] - monStats["Def"],"points of damage.")
-    monStats["HP"] -= (stats["ATK"] - monStats["Def"])
-    print("The monster has", monStats["HP"],"Health remaining.\n")
+    if(monStats["Def"] < stats["ATK"]):
+        print("The monster tires itself out, and takes", stats["ATK"] - monStats["Def"],"points of damage.")
+        monStats["HP"] -= (stats["ATK"] - monStats["Def"])
+        print("The monster has", monStats["HP"],"Health remaining.\n")
+    else:
+        print("The monster was too strong, and took no damage!")
     meters["agree"] += 1
 
 def Befriend():
     print("\nYou tell the monster that you want to be it's good friend.")
-    print("Joyfully, the monster takes", stats["ATK"] - monStats["Def"],"points of emotional damage.")
-    monStats["HP"] -= (stats["ATK"] - monStats["Def"])
-    print("The monster has", monStats["HP"],"Health remaining.\n")
+    if(monStats["Def"] < stats["ATK"]):
+        print("The monster joyfully takes", stats["ATK"] - monStats["Def"],"points of emotional damage.")
+        monStats["HP"] -= (stats["ATK"] - monStats["Def"])
+        print("The monster has", monStats["HP"],"Health remaining.\n")
+    else:
+        print("The monster was too strong, and took no damage!")
     meters["sAgree"] += 1
 
 def EnemyAttack():
     print("The monster claws into you")
-    print("You take", monStats["ATK"] - stats["Def"],"damage.")
-    stats["HP"] -= monStats["ATK"] - stats["Def"]
-    print("You have",stats["HP"],"HP remaining.")
-    
+    if(stats["Def"] < monStats["ATK"]):
+        print("You take", monStats["ATK"] - stats["Def"],"damage.")
+        stats["currHP"] -= monStats["ATK"] - stats["Def"]
+        print("You have",stats["currHP"],"HP remaining.")
+    else:
+        print("The monster was too weak, and did no damage!")
+        
 #Checking and Battle functions
 def BattleEnd(currentEnemy= 2):
     currentEnemy = max(meters)
@@ -272,7 +337,7 @@ def BattleScreen():
 
         EnemyAttack()
 
-        if(stats["HP"] <= 0):
+        if(stats["currHP"] <= 0):
             print("Game Over")
             input()
             exit()
@@ -320,7 +385,7 @@ def miniBattleScreen():
 
         EnemyAttack()
 
-        if(stats["HP"] <= 0):
+        if(stats["currHP"] <= 0):
             print("Game Over")
             input()
             exit()
@@ -334,90 +399,129 @@ def setMonStats(HP, ATK, Def):
         "Def": Def,
         }
 
-
-#Area Menu
+#Main Menu
 while True:
-    print("\n[0] Town\n[1] Area\n[2] Shop\n[3] Advance\n[4] Stats\n")
-    townSelect =(input())
-    if(townSelect.isdigit()):
-        townSelect = int(townSelect)
+    menuSelect = input("\n--------Personality RPG--------\n\n[0] Start\n[1] Credit\n")
+    if(menuSelect.isdigit()):
+        menuSelect = int(menuSelect)
 
-        if(townSelect == 0):
-            town(currMonster)
-            continue
+        if(menuSelect == 0):
 
-        if(townSelect == 1):
-            setMonStats(*miniMonStatMap.get(currMonster, (0, 0, 0)))
-            miniBattleScreen()
-            continue
+            intro()
 
-        if(townSelect == 2):
-            store()
-            continue
+            #Area Menu
+            while True:
+                if(currMonster < 6):
+                        
+                    townSelect = input("\n[0] Town\n[1] Area\n[2] Shop\n[3] Advance\n[4] Stats\n[5] Rest\n")
+                    if(townSelect.isdigit()):
+                        townSelect = int(townSelect)
+
+                        if(townSelect == 0):
+                            town(currMonster)
+                            continue
+
+                        if(townSelect == 1):
+                            print("\nYou encounter a small monster in the surrounding area!\n")
+                            setMonStats(*miniMonStatMap.get(currMonster, (0, 0, 0)))
+                            miniBattleScreen()
+                            continue
+
+                        if(townSelect == 2):
+                            store()
+                            continue
+                            
+                        if(townSelect == 3):
+                            setMonStats(*monStatMap.get(currMonster, (0, 0, 0))) #Unpacks and repacks tuple, as well as record enemy stats.
+                            BattleScreen()
+                            continue
+
+                        if(townSelect == 4):
+                            print(f"\nGold - {stats['Gold']}\nPotions - {stats['Potion']}\n\nExperience - {stats['EXP']}\nLevel - {stats['LVL']}\n\nMax HP - {stats['HP']}\nHP - {stats['currHP']} \n\nATK - {stats['ATK']}\nDEF - {stats['Def']}\n")
+                            continue
+                        
+                        if(townSelect == 5):
+                            #Rest selection
+                            print(f"Would you like to rest in town for {currRestCost}G?")
+                            sleepSelect = input("\n[0] Yes\n[1] No\n")
+                            if(sleepSelect.isdigit()):
+                                sleepSelect = int(sleepSelect)
+                                
+                                if(sleepSelect == 0):
+                                    if(stats["Gold"] >= currRestCost):
+                                        stats["Gold"] -= currRestCost
+                                        print("\nYou rest in town, cozy in these dreadful lands...\n\nHP fully restored!\n")
+                                        stats["currHP"] = stats["HP"]
+
+                                    else:
+                                        print("You do not have enough Gold\n")
+
+                                if(sleepSelect == 1):
+                                    continue
+                            else:
+                                print("\nInvalid Input, try again.\n")
+                                
+                        else:
+                            print("\nInvalid Input, try again.\n")
+                        
+                    else:
+                        print("\nInvalid Input, try again.\n")
+
+                else:
+                    #Personality Statements
+                    if(e1Result == 0 and e2Result == 1 and e3Result == 2 and e4Result == 3 and e5Result == 4):
+                        print("Your personality is INTJ, imaginative and stragetic thinkers with a plan for everything.")
+
+                    if(e1Result == 0 and e2Result == 1 and e3Result == 2 and e4Result == 3 and e5Result == 4):
+                        print("Your personality is INTP, innovative investors with a lot of knowledge.")
+
+                    if(e1Result == 0 and e2Result == 1 and e3Result == 2 and e4Result == 3 and e5Result == 4):
+                        print("Your personality is ENTJ, bold, imaginative and strong-willed leaders, always finding a way- or making one.") 
+
+                    if(e1Result == 0 and e2Result == 1 and e3Result == 2 and e4Result == 3 and e5Result == 4):
+                        print("Your personality is ENTP, smart and curious thinkers who ca not resist an intellectual challenge.")
+
+                    if(e1Result == 0 and e2Result == 1 and e3Result == 2 and e4Result == 3 and e5Result == 4):
+                        print("Your personality is INFJ, quiet and mystical, yet very inpiring and tireless idealist.") 
+
+                    if(e1Result == 0 and e2Result == 1 and e3Result == 2 and e4Result == 3 and e5Result == 4):
+                        print("Your personality is INFP, poetic, kind and altruistic people, always eager to help a good cause.") 
+
+                    if(e1Result == 0 and e2Result == 1 and e3Result == 2 and e4Result == 3 and e5Result == 4):
+                        print("Your personality is ENFJ, charamasitc and inspiring leaders able to mesmerize their listeners.") 
+
+                    if(e1Result == 0 and e2Result == 1 and e3Result == 2 and e4Result == 3 and e5Result == 4):
+                        print("Your personality is ENFP, euthusiastic, creative and socialable free spirits, who can always find a reason to smile.")
+
+                    if(e1Result == 0 and e2Result == 1 and e3Result == 2 and e4Result == 3 and e5Result == 4):
+                        print("Your personality is ISTJ, practical and fact-minded individuals, whose reliability can not be doubled.") 
+
+                    if(e1Result == 0 and e2Result == 1 and e3Result == 2 and e4Result == 3 and e5Result == 4):
+                        print("Your personality is ISFJ, very dedicated and warm protectors, always ready to defend their loved ones.") 
+
+                    if(e1Result == 0 and e2Result == 1 and e3Result == 2 and e4Result == 3 and e5Result == 4):
+                        print("Your personality is ESTJ, excellent administrators, unsurpassed at managing things or people.")  
+
+                    if(e1Result == 0 and e2Result == 1 and e3Result == 2 and e4Result == 3 and e5Result == 4):
+                        print("Your personality is ESFJ, caring, social, and popular people, always eager to help.") 
+
+                    if(e1Result == 0 and e2Result == 1 and e3Result == 2 and e4Result == 3 and e5Result == 4):
+                        print("Your personality is ISTP, bold and practical experimenters") 
+
+                    if(e1Result == 0 and e2Result == 1 and e3Result == 2 and e4Result == 3 and e5Result == 4):
+                        print("Your personality is ISFP, flexible and charming artists always ready to explore and experience something new.")
+                                    
+                    if(e1Result == 0 and e2Result == 1 and e3Result == 2 and e4Result == 3 and e5Result == 4):
+                        print("Your personality is ESTP, smart, energentic and very  perceptive people.") 
+
+                    if(e1Result == 0 and e2Result == 1 and e3Result == 2 and e4Result == 3 and e5Result == 4):
+                        print("Your perosnality is ESFP, spontaneous, energetic and enthusiastic people.")
+
+        #Credit
+        if(menuSelect == 1):
+            print("\nKyleigh Marlowe - Town Talks\n\nJudah McBee - General Systems & Intro\n\nDaniela Olvera - Personality Systems\n")
             
-        if(townSelect == 3):
-            setMonStats(*monStatMap.get(currMonster, (0, 0, 0))) #Unpacks and repacks tuple, as well as record enemy stats.
-            BattleScreen()
-            continue
-
-        if(townSelect == 4):
-            print(stats)
-                
         else:
             print("\nInvalid Input, try again.")
-        
     else:
-        print("\nInvalid Input, try again.")
-        
-
-#Personality Statements
-if(e1Result == 0 and e2Result == 1 and e3Result == 2 and e4Result == 3 and e5Result == 4):
-                print("Your personality is INTJ, imaginative and stragetic thinkers with a plan for everything.")
-
-if(e1Result == 0 and e2Result == 1 and e3Result == 2 and e4Result == 3 and e5Result == 4):
-                    print("Your personality is INTP, innovative investors with a lot of knowledge.")
-
-if(e1Result == 0 and e2Result == 1 and e3Result == 2 and e4Result == 3 and e5Result == 4):
-                print("Your personality is ENTJ, bold, imaginative and strong-willed leaders, always finding a way- or making one.") 
-
-if(e1Result == 0 and e2Result == 1 and e3Result == 2 and e4Result == 3 and e5Result == 4):
-                print("Your personality is ENTP, smart and curious thinkers who ca not resist an intellectual challenge.")
-
-if(e1Result == 0 and e2Result == 1 and e3Result == 2 and e4Result == 3 and e5Result == 4):
-                print("Your personality is INFJ, quiet and mystical, yet very inpiring and tireless idealist.") 
-
-if(e1Result == 0 and e2Result == 1 and e3Result == 2 and e4Result == 3 and e5Result == 4):
-                print("Your personality is INFP, poetic, kind and altruistic people, always eager to help a good cause.") 
-
-if(e1Result == 0 and e2Result == 1 and e3Result == 2 and e4Result == 3 and e5Result == 4):
-                print("Your personality is ENFJ, charamasitc and inspiring leaders able to mesmerize their listeners.") 
-
-if(e1Result == 0 and e2Result == 1 and e3Result == 2 and e4Result == 3 and e5Result == 4):
-                print("Your personality is ENFP, euthusiastic, creative and socialable free spirits, who can always find a reason to smile.")
-
-if(e1Result == 0 and e2Result == 1 and e3Result == 2 and e4Result == 3 and e5Result == 4):
-                print("Your personality is ISTJ, practical and fact-minded individuals, whose reliability can not be doubled.") 
-
-if(e1Result == 0 and e2Result == 1 and e3Result == 2 and e4Result == 3 and e5Result == 4):
-                print("Your personality is ISFJ, very dedicated and warm protectors, always ready to defend their loved ones.") 
-
-if(e1Result == 0 and e2Result == 1 and e3Result == 2 and e4Result == 3 and e5Result == 4):
-                print("Your personality is ESTJ, excellent administrators, unsurpassed at managing things or people.")  
-
-if(e1Result == 0 and e2Result == 1 and e3Result == 2 and e4Result == 3 and e5Result == 4):
-                print("Your personality is ESFJ, caring, social, and popular people, always eager to help.") 
-
-if(e1Result == 0 and e2Result == 1 and e3Result == 2 and e4Result == 3 and e5Result == 4):
-                print("Your personality is ISTP, bold and practical experimenters") 
-
-if(e1Result == 0 and e2Result == 1 and e3Result == 2 and e4Result == 3 and e5Result == 4):
-                print("Your personality is ISFP, flexible and charming artists always ready to explore and experience something new.")
-                
-if(e1Result == 0 and e2Result == 1 and e3Result == 2 and e4Result == 3 and e5Result == 4):
-                print("Your personality is ESTP, smart, energentic and very  perceptive people.") 
-
-if(e1Result == 0 and e2Result == 1 and e3Result == 2 and e4Result == 3 and e5Result == 4):
-                print("Your perosnality is ESFP, spontaneous, energetic and enthusiastic people.")
-        
-else:
         print("\nInvalid Input, try again.")
