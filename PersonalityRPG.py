@@ -87,9 +87,9 @@ towns = {
 "Susan": "So how where the monsters?"
 },
 5: {
-"Lily": "well well...",
-"Joseph": "Test words 2",
-"Steve": "Test words 3"
+"Lily": "Well well...",
+"Joseph": "Wow I can't believe you made it this far.",
+"Steve": "Good job for making it this far!"
 },
 }
 
